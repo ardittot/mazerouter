@@ -4,7 +4,11 @@ A core program for routing gates/component in ASIC. This program was built based
   - 2 metal layers available
   
 The main program is invoked using this command:
+
+  g++ -o router router.cpp 
   router.exe <grid-file> <netlist-file>
+  router.exe fract2.grid fract2.nl
+  
 It reads two file:
   1.  Grid File (.grid)
   
