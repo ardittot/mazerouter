@@ -301,16 +301,23 @@ void netRoute (char* name, int nx, int ny, int nl, int bendPenalty, int viaPenal
 		T.y = netlist[i][5];
 		cout << "** Netlist-" << i+1 << "\t:\t" << S.layer << "\t" << S.x << "\t" << S.y << "\t" << T.layer << "\t" << T.x << "\t" << T.y << endl;
 		mazeRouter (S, T, nx, ny, bendPenalty, viaPenalty, gridCost, gridInfo, success, succ);
-		traceWrite (success, succ, S, T);
-		std::string str;
-		std::ifstream InFile ("tmp");
-		getline (InFile,str);
-		while (!str.empty()) {
-			OutFile << str << endl;
-			getline (InFile,str);
+		///////// *** Writing to out file *** /////////
+		if (success) {
+			coord c = S;
+			while (!succ.empty()) {
+				OutFile << (c.layer)+1 << " " << c.x << " " << c.y << endl;
+				short int tmp = -succ.top();
+				if ((tmp==UP) || (tmp==DOWN)) {
+					OutFile << "3" << " " << c.x << " " << c.y << endl;
+				}
+				pointingCoord (tmp, c);	
+				succ.pop();
+			}
+			OutFile << (c.layer)+1 << " " << c.x << " " << c.y << endl;
 		}
+		OutFile << "0" << endl;
+		///////////////////////////////////////////////
 	}
-	//Close file
 	OutFile.close();
 }
 
